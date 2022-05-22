@@ -1,0 +1,44 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+@model List<DemoCoreWeb.Models.Site>
+
+<div class="text-center">
+	<h1 class="display-4">EF Core Select</h1>
+
+	<hr />
+	@foreach (DemoCoreWeb.Models.Site site in Model) {
+		<p>Id : @site.Id</p>
+		<p>Create Date :@site.CreateDate</p>
+		<p>Update Date : @site.UpdateDate</p>
+		<p>Title :@site.Title</p>
+		<p>Url : @site.Url</p>
+		<p>LocalUrl : @site.LocalUrl</p>
+		<p>IsActive : @site.IsActive</p>
+		<hr />
+	}
+
+	@*<p>Table Name :</p>
+		<input type="text" name="txtTable" value="Sites" />
+		<input type="button" value="Check" onclick="checkDb();" />*@
+</div>
+
+<script>
+	function checkDb() {
+		console.log("ok");
+		var tableName = document.getElementsByName('txtTable')[0].value
+		var url = "/Home/CheckDb?tableName=" + tableName;
+
+			$.get(url, function (data, status) {
+				alert("Data: " + data + "\nStatus: " + status);
+			});		
+		
+		//const response = fetch(url, {
+		//	method: 'GET',
+		//	//body: JSON.stringify(data),
+		//	headers: { "Content-type": "application/json; charset=UTF-8" }
+		//}).then(response => response.text()).then(result => alert(result));
+			
+	}
+</script>
