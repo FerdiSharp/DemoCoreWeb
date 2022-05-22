@@ -1,9 +1,11 @@
 ﻿using DemoCoreWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;using System.Threading.Tasks;
 
@@ -36,27 +38,25 @@ namespace DemoCoreWeb.Controllers {
 
 		[HttpGet]
 		public string CheckDb(string tableName) {
-			//SqlConnection connection = null;			
-			//try {
-			//	string connectionString = _configuration.GetConnectionString("faktoringDb");
-			//	string sql = "select count(*) from "+tableName;
-			//	connection = new SqlConnection(connectionString);
-			//	if (connection.State != ConnectionState.Open) {
-			//		connection.Open();
-			//	}
+			SqlConnection connection = null;
+			try {
+				string connectionString = _configuration.GetConnectionString("faktoringDb");
+				string sql = "select count(*) from " + tableName;
+				connection = new SqlConnection(connectionString);
+				if (connection.State != ConnectionState.Open) {
+					connection.Open();
+				}
 
-			//	SqlCommand sqlCommand = new SqlCommand(sql, connection);
-			//	int val = int.Parse(sqlCommand.ExecuteScalar().ToString());
-			//	return val.ToString();
-			//}
-			//catch(Exception ex) {
-			//	return  ex.Message;
-			//}
-			//finally {
-			//	if (connection != null && connection.State == ConnectionState.Open) {
-			//		connection.Close();
-			//	}				
-			//}
+				SqlCommand sqlCommand = new SqlCommand(sql, connection);
+				int val = int.Parse(sqlCommand.ExecuteScalar().ToString());
+				return val.ToString();
+			} catch (Exception ex) {
+				return ex.Message;
+			} finally {
+				if (connection != null && connection.State == ConnectionState.Open) {
+					connection.Close();
+				}
+			}
 
 			return "ok";
 		}
